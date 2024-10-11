@@ -27,9 +27,10 @@ contract FundMe {
     }
 
     function fund() public payable {
-        if (msg.value.getConversionRate(priceFeed) < MINIMUM_USD_AMOUNT) {
-            revert FundMe_InsufficientFunds();
-        }
+        require(
+            msg.value.getConversionRate(priceFeed) >= MINIMUM_USD_AMOUNT,
+            "You need to spend more ETH!"
+        );
         donations[msg.sender] += msg.value;
         donators.push(msg.sender);
     }
